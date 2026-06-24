@@ -1,0 +1,47 @@
+# Dependências
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build
+dist/
+build/
+*.tsbuildinfo
+
+# Variáveis de ambiente (NUNCA commitar segredos)
+.env
+.env.local
+.env.*.local
+
+# Cobertura de testes
+coverage/
+
+# Uploads de mídia (vídeos/imagens enviados por usuários) — manter apenas a estrutura
+uploads/**/*
+!uploads/.gitkeep
+!uploads/videos/.gitkeep
+!uploads/captions/.gitkeep
+!uploads/images/.gitkeep
+
+# Diagramas renderizados são versionados; ignorar artefatos temporários do PlantUML
+docs/02-modelagem/rendered/*.tmp
+
+# Exports temporários de documentos
+docs/**/~$*.docx
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# PlantUML local jar (baixado pelo script de render)
+scripts/plantuml.jar
+
+# Logs
+logs/
+*.log
