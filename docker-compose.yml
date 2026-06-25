@@ -1,0 +1,71 @@
+# ============================================================================
+# Dicionário Libras+ — Orquestração local
+# Sobe PostgreSQL + pgAdmin 4 (e, opcionalmente, a aplicação).
+# Uso:
+#   docker compose up -d            # sobe banco + pgadmin
+#   docker compose --profile app up # sobe também a aplicação
+# ============================================================================
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: libras_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-dicionario_libras}
+      POSTGRES_USER: ${DB_USER:-libras}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-libras_dev_password}
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-libras} -d ${DB_NAME:-dicionario_libras}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: libras_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@admin.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+  # A aplicação é opcional no compose: por padrão rodamos via `npm run dev`.
+  # Suba com:  docker compose --profile app up --build
+  app:
+    profiles: ["app"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: libras_app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-dicionario_libras}
+      DB_USER: ${DB_USER:-libras}
+      DB_PASSWORD: ${DB_PASSWORD:-libras_dev_password}
+      SESSION_SECRET: ${SESSION_SECRET:-troque-este-segredo}
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./uploads:/app/uploads
+
+volumes:
+  pgdata:
+  pgadmin_data:
