@@ -1,0 +1,16 @@
+<%- include('partials/head', { titulo: titulo || 'Erro' }) %>
+<%- include('partials/header') %>
+
+<main id="conteudo" class="container container--estreito">
+  <h1 class="titulo-pagina"><%= status %> — <%= titulo %></h1>
+  <div class="alerta alerta--erro" role="alert"><%= mensagem %></div>
+  <p><a class="btn btn--primario" href="/">Voltar para a busca</a></p>
+  <% if (locals.detalhe) { %>
+    <details class="painel">
+      <summary>Detalhes técnicos (apenas em desenvolvimento)</summary>
+      <pre><%= detalhe %></pre>
+    </details>
+  <% } %>
+</main>
+
+<%- include('partials/footer') %>

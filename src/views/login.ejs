@@ -1,0 +1,35 @@
+<%- include('partials/head', { titulo }) %>
+<%- include('partials/header') %>
+
+<main id="conteudo" class="container container--estreito">
+  <h1 class="titulo-pagina">Entrar</h1>
+
+  <% if (erro) { %>
+    <div class="alerta alerta--erro" role="alert"><%= erro %></div>
+  <% } %>
+
+  <form action="/login" method="post" class="painel formulario" novalidate>
+    <input type="hidden" name="retorno" value="<%= retorno %>" />
+    <div class="campo">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" autocomplete="username" required />
+    </div>
+    <div class="campo">
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" name="senha" autocomplete="current-password" required />
+    </div>
+    <button type="submit" class="btn btn--primario">Entrar</button>
+    <p class="ajuda">Não tem conta? <a href="/registrar">Crie uma conta de colaborador</a>.</p>
+  </form>
+
+  <aside class="painel contas-demo">
+    <h2>Contas de demonstração</h2>
+    <ul>
+      <li><strong>Administrador:</strong> admin@libras.gov.br / Admin@123</li>
+      <li><strong>Revisor:</strong> revisor@libras.gov.br / Revisor@123</li>
+      <li><strong>Colaborador:</strong> colaborador@libras.gov.br / Colab@123</li>
+    </ul>
+  </aside>
+</main>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,94 @@
+<%- include('../partials/head', { titulo }) %>
+<%- include('../partials/header') %>
+
+<%
+  const editando = !!(sinal && sinal.id);
+  const action = editando ? ('/admin/sinais/' + sinal.id) : '/admin/sinais';
+  const statusAtual = (sinal && sinal.status) ? sinal.status : 'PUBLICADO';
+  const videoAtual = (editando && sinal.videos)
+    ? sinal.videos.find(function (v) { return !v.varianteId; })
+    : null;
+%>
+
+<main id="conteudo" class="container">
+  <h1 class="titulo-pagina"><%= editando ? 'Editar sinal' : 'Novo sinal' %></h1>
+
+  <% if (erro) { %>
+    <div class="alerta alerta--erro" role="alert"><%= erro %></div>
+  <% } %>
+
+  <form action="<%= action %>" method="post" enctype="multipart/form-data" class="painel formulario" novalidate>
+    <%- include('../partials/sinal-campos', { sinal: sinal, assuntos, enums }) %>
+
+    <div class="campo">
+      <label for="status">Status (visibilidade)</label>
+      <select id="status" name="status">
+        <% Object.values(enums.StatusSinal).forEach(function (st) { %>
+          <option value="<%= st %>" <%= statusAtual === st ? 'selected' : '' %>><%= st %></option>
+        <% }); %>
+      </select>
+      <p class="ajuda">Apenas sinais <strong>PUBLICADO</strong> aparecem na busca pública. Para um
+        novo verbete já visível, mantenha PUBLICADO.</p>
+    </div>
+
+    <!-- Vídeo do sinal (opcional na edição; substitui o atual quando enviado) -->
+    <fieldset class="campo campo--largo">
+      <legend>Vídeo do sinal</legend>
+      <% if (videoAtual) { %>
+        <p class="ajuda">Vídeo atual:</p>
+        <video class="player player--pequeno" controls preload="none" aria-label="Vídeo atual do sinal">
+          <source src="<%= videoAtual.url %>" type="video/mp4" />
+          <% if (videoAtual.legendaUrl) { %>
+            <track kind="captions" src="<%= videoAtual.legendaUrl %>" srclang="pt" label="Português" default />
+          <% } %>
+        </video>
+        <p class="ajuda">Envie um novo arquivo abaixo para <strong>substituir</strong> o vídeo atual.</p>
+      <% } else if (editando) { %>
+        <p class="aviso">⚠️ Este sinal ainda não tem vídeo. Adicione um abaixo.</p>
+      <% } %>
+      <div class="campo">
+        <label for="video">Arquivo de vídeo (MP4/WebM, até 50 MB)</label>
+        <input type="file" id="video" name="video" accept="video/mp4,video/webm,video/ogg" />
+        <progress id="progresso-upload" value="0" max="100" hidden>0%</progress>
+      </div>
+      <div class="campo">
+        <label for="legenda">Legenda (.vtt ou .srt) — recomendada para acessibilidade</label>
+        <input type="file" id="legenda" name="legenda" accept=".vtt,.srt" />
+      </div>
+    </fieldset>
+
+    <!-- Consentimento LGPD (necessário se o vídeo contém pessoa identificável) -->
+    <fieldset class="campo campo--largo bloco-lgpd">
+      <legend>Consentimento (LGPD)</legend>
+      <label class="checkbox">
+        <input type="checkbox" name="contemPessoaIdentificavel" id="contemPessoa" />
+        O vídeo contém uma pessoa identificável.
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" name="contemMenor" />
+        A pessoa retratada é menor de idade (exige consentimento do responsável).
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" name="consentimentoConcedido" />
+        Declaro que há <strong>consentimento</strong> registrado do titular (ou responsável).
+      </label>
+      <p class="ajuda">Só é exigido quando você envia um vídeo com pessoa identificável.</p>
+    </fieldset>
+
+    <div class="acoes-form">
+      <button type="submit" class="btn btn--primario"><%= editando ? 'Salvar alterações' : 'Criar sinal' %></button>
+      <a href="/admin/sinais" class="btn btn--ghost">Cancelar</a>
+    </div>
+  </form>
+
+  <% if (editando && pode(Permissao.EXCLUIR_SINAL)) { %>
+    <form action="/admin/sinais/<%= sinal.id %>/excluir" method="post" class="painel zona-perigo"
+          data-confirm="Excluir o sinal &quot;<%= sinal.palavra %>&quot;? Esta ação é irreversível.">
+      <h2>Zona de perigo</h2>
+      <p>Excluir remove permanentemente este sinal e seus vídeos/variantes associados.</p>
+      <button type="submit" class="btn btn--perigo">Excluir este sinal</button>
+    </form>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,25 @@
+<%- include('partials/head', { titulo }) %>
+<%- include('partials/header') %>
+
+<main id="conteudo" class="container container--estreito">
+  <h1 class="titulo-pagina">Sobre o projeto</h1>
+  <section class="painel">
+    <p>O <strong>Dicionário Libras+</strong> é uma expansão do Dicionário da Língua
+       Brasileira de Sinais. Permite pesquisar e visualizar sinais com vídeo legendado,
+       configuração de mão, parâmetros gramaticais, SignWriting e variantes regionais.</p>
+    <h2>Papéis de usuário</h2>
+    <ul>
+      <li><strong>Visitante:</strong> pesquisa e visualiza sinais publicados.</li>
+      <li><strong>Colaborador:</strong> submete novos sinais com vídeo e acompanha o status.</li>
+      <li><strong>Revisor:</strong> avalia, aprova ou rejeita submissões.</li>
+      <li><strong>Administrador:</strong> CRUD completo de sinais e de usuários.</li>
+    </ul>
+    <h2>Acessibilidade e privacidade</h2>
+    <p>A interface segue as diretrizes <strong>WCAG 2.1 AA</strong> (legendas nos vídeos,
+       navegação por teclado, contraste adequado) e o tratamento de dados respeita a
+       <strong>LGPD</strong> (consentimento para mídia com pessoas identificáveis e
+       trilha de auditoria).</p>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

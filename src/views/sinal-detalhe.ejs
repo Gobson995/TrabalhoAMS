@@ -1,0 +1,120 @@
+<%- include('partials/head', { titulo }) %>
+<%- include('partials/header') %>
+
+<%
+  // Vídeo principal: o que está ligado ao sinal (sem variante).
+  const videoPrincipal = (sinal.videos || []).find(function (v) { return !v.varianteId; });
+  function videoDaVariante(varId) {
+    return (sinal.videos || []).find(function (v) { return v.varianteId === varId; });
+  }
+%>
+
+<main id="conteudo" class="container">
+  <nav class="migalhas" aria-label="Você está em">
+    <a href="/">Pesquisar</a> <span aria-hidden="true">›</span> <span><%= sinal.palavra %></span>
+  </nav>
+
+  <article class="sinal">
+    <header class="sinal__cabecalho">
+      <h1 class="sinal__titulo"><%= sinal.palavra %><% if (sinal.numero) { %><sup><%= sinal.numero %></sup><% } %></h1>
+      <span class="badge badge--status badge--<%= sinal.status.toLowerCase() %>"><%= sinal.status %></span>
+      <% if (sinal.classeGramatical) { %><span class="badge"><%= sinal.classeGramatical %></span><% } %>
+      <span class="badge badge--origem">Origem: <%= sinal.origem %></span>
+    </header>
+
+    <div class="sinal__grade">
+      <!-- Coluna esquerda: Mão (configuração) + SignWriting -->
+      <aside class="sinal__mao painel" aria-labelledby="mao-titulo">
+        <h2 id="mao-titulo">Mão</h2>
+        <% if (sinal.imagemUrl) { %>
+          <img class="sinal__mao-img" src="<%= sinal.imagemUrl %>"
+               alt="Configuração de mão do sinal <%= sinal.palavra %>: <%= sinal.configuracaoMao || 'não informada' %>" />
+        <% } else { %>
+          <div class="sinal__mao-placeholder" role="img"
+               aria-label="Configuração de mão: <%= sinal.configuracaoMao || 'não informada' %>">
+            ✋
+          </div>
+        <% } %>
+        <p class="sinal__mao-legenda"><%= sinal.configuracaoMao || 'Configuração não informada' %></p>
+
+        <% if (sinal.signWriting) { %>
+          <h3>SignWriting</h3>
+          <p class="signwriting" aria-label="Notação SignWriting do sinal"><%= sinal.signWriting %></p>
+        <% } %>
+      </aside>
+
+      <!-- Coluna central: Vídeo do sinal com legendas -->
+      <section class="sinal__video painel" aria-labelledby="video-titulo">
+        <h2 id="video-titulo">Vídeo do sinal</h2>
+        <% if (videoPrincipal) { %>
+          <video class="player" controls preload="metadata"
+                 aria-label="Vídeo demonstrativo do sinal <%= sinal.palavra %>">
+            <source src="<%= videoPrincipal.url %>" type="video/mp4" />
+            <% if (videoPrincipal.legendaUrl) { %>
+              <track kind="captions" src="<%= videoPrincipal.legendaUrl %>"
+                     srclang="pt" label="Português" default />
+            <% } %>
+            Seu navegador não reproduz vídeo HTML5. Faça download do arquivo.
+          </video>
+          <% if (!videoPrincipal.legendaUrl) { %>
+            <p class="aviso">⚠️ Este vídeo ainda não possui legendas (necessário para WCAG 1.2.2).</p>
+          <% } %>
+        <% } else { %>
+          <p class="vazio">Nenhum vídeo cadastrado para este sinal.</p>
+        <% } %>
+      </section>
+
+      <!-- Coluna direita: Acepção / Exemplo / parâmetros -->
+      <section class="sinal__verbete painel" aria-labelledby="verbete-titulo">
+        <h2 id="verbete-titulo">Verbete</h2>
+        <dl class="ficha">
+          <dt>Acepção</dt><dd><%= sinal.acepcao || '—' %></dd>
+          <dt>Exemplo</dt><dd><%= sinal.exemplo || '—' %></dd>
+          <dt>Exemplo em Libras</dt><dd><%= sinal.exemploLibras || '—' %></dd>
+          <dt>Classe gramatical</dt><dd><%= sinal.classeGramatical || '—' %></dd>
+          <dt>Classificação</dt><dd><%= sinal.classificacao || '—' %></dd>
+          <dt>Ponto de articulação</dt><dd><%= sinal.pontoArticulacao || '—' %></dd>
+          <dt>Disposição da mão</dt><dd><%= sinal.disposicaoMao || '—' %></dd>
+          <dt>Orientação da mão</dt><dd><%= sinal.orientacaoMao || '—' %></dd>
+          <dt>Região de contato</dt><dd><%= sinal.regiaoContato || '—' %></dd>
+          <dt>Componentes não manuais</dt><dd><%= sinal.componentesNaoManuais || '—' %></dd>
+          <% if (sinal.assuntos && sinal.assuntos.length) { %>
+            <dt>Assuntos</dt>
+            <dd><% sinal.assuntos.forEach(function (a) { %><span class="badge"><%= a.nome %></span> <% }); %></dd>
+          <% } %>
+        </dl>
+      </section>
+    </div>
+
+    <!-- Variantes regionais (caso "Pai": Padrão / RJ / RS) -->
+    <% if (sinal.variantes && sinal.variantes.length) { %>
+      <section class="sinal__variantes painel" aria-labelledby="variantes-titulo">
+        <h2 id="variantes-titulo">Variação linguística (variantes regionais)</h2>
+        <div class="variantes-grade">
+          <% sinal.variantes.forEach(function (v) { const vv = videoDaVariante(v.id); %>
+            <article class="variante">
+              <h3>Variante: <%= v.regiao %></h3>
+              <% if (v.videoUrl) { %>
+                <video class="player player--pequeno" controls preload="none"
+                       aria-label="Vídeo da variante <%= v.regiao %> do sinal <%= sinal.palavra %>">
+                  <source src="<%= v.videoUrl %>" type="video/mp4" />
+                  <% if (vv && vv.legendaUrl) { %>
+                    <track kind="captions" src="<%= vv.legendaUrl %>" srclang="pt" label="Português" default />
+                  <% } %>
+                </video>
+              <% } %>
+              <p><%= v.descricao || '' %></p>
+              <% if (v.signWriting) { %><p class="signwriting"><%= v.signWriting %></p><% } %>
+            </article>
+          <% }); %>
+        </div>
+      </section>
+    <% } %>
+
+    <% if (locals.usuario && pode(Permissao.EDITAR_SINAL)) { %>
+      <p class="acoes-admin"><a class="btn btn--ghost" href="/admin/sinais/<%= sinal.id %>/editar">Editar este sinal</a></p>
+    <% } %>
+  </article>
+</main>
+
+<%- include('partials/footer') %>

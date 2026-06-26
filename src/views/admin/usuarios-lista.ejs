@@ -1,0 +1,41 @@
+<%- include('../partials/head', { titulo }) %>
+<%- include('../partials/header') %>
+
+<main id="conteudo" class="container">
+  <div class="cabecalho-secao">
+    <h1 class="titulo-pagina">Gerenciar usuários</h1>
+    <a href="/admin/usuarios/novo" class="btn btn--primario">+ Novo usuário</a>
+  </div>
+
+  <% if (locals.urlAtual && /ok=(criado|editado|excluido)/.test(urlAtual)) { %>
+    <div class="alerta alerta--ok" role="status">Operação realizada com sucesso.</div>
+  <% } %>
+
+  <table class="tabela">
+    <caption class="sr-only">Usuários cadastrados e seus papéis</caption>
+    <thead>
+      <tr><th scope="col">Nome</th><th scope="col">E-mail</th><th scope="col">Papel</th><th scope="col">Ativo</th><th scope="col">Ações</th></tr>
+    </thead>
+    <tbody>
+      <% usuarios.forEach(function (u) { %>
+        <tr>
+          <td><%= u.nome %></td>
+          <td><%= u.email %></td>
+          <td><span class="badge badge--papel"><%= u.papel %></span></td>
+          <td><%= u.ativo ? 'Sim' : 'Não' %></td>
+          <td class="acoes-tabela">
+            <a href="/admin/usuarios/<%= u.id %>/editar">Editar</a>
+            <% if (u.id !== usuario.id) { %>
+              <form action="/admin/usuarios/<%= u.id %>/excluir" method="post" class="inline-form"
+                    data-confirm="Excluir o usuário <%= u.nome %>?">
+                <button type="submit" class="link-perigo">Excluir</button>
+              </form>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</main>
+
+<%- include('../partials/footer') %>

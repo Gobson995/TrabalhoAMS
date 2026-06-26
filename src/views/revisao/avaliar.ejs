@@ -1,0 +1,74 @@
+<%- include('../partials/head', { titulo }) %>
+<%- include('../partials/header') %>
+
+<%
+  const videoPrincipal = (sinal.videos || []).find(function (v) { return !v.varianteId; });
+%>
+
+<main id="conteudo" class="container">
+  <nav class="migalhas" aria-label="Você está em">
+    <a href="/revisao">Fila de aprovação</a> <span aria-hidden="true">›</span> <span><%= sinal.palavra %></span>
+  </nav>
+  <h1 class="titulo-pagina">Avaliar: <%= sinal.palavra %></h1>
+
+  <div class="grade-avaliacao">
+    <section class="painel">
+      <h2>Pré-visualização</h2>
+      <% if (videoPrincipal) { %>
+        <video class="player" controls preload="metadata" aria-label="Vídeo da submissão">
+          <source src="<%= videoPrincipal.url %>" type="video/mp4" />
+          <% if (videoPrincipal.legendaUrl) { %>
+            <track kind="captions" src="<%= videoPrincipal.legendaUrl %>" srclang="pt" label="Português" default />
+          <% } %>
+        </video>
+        <% if (!videoPrincipal.legendaUrl) { %>
+          <p class="aviso">⚠️ Submissão sem legendas. Considere solicitar legendas antes de publicar (WCAG 1.2.2).</p>
+        <% } %>
+      <% } else { %>
+        <p class="vazio">Sem vídeo anexado.</p>
+      <% } %>
+
+      <dl class="ficha">
+        <dt>Acepção</dt><dd><%= sinal.acepcao || '—' %></dd>
+        <dt>Exemplo</dt><dd><%= sinal.exemplo || '—' %></dd>
+        <dt>Classe gramatical</dt><dd><%= sinal.classeGramatical || '—' %></dd>
+        <dt>Classificação</dt><dd><%= sinal.classificacao || '—' %></dd>
+        <dt>Ponto de articulação</dt><dd><%= sinal.pontoArticulacao || '—' %></dd>
+        <dt>Configuração da mão</dt><dd><%= sinal.configuracaoMao || '—' %></dd>
+      </dl>
+    </section>
+
+    <section class="painel">
+      <h2>Decisão</h2>
+      <form action="/revisao/<%= sinal.id %>/aprovar" method="post" class="formulario">
+        <div class="campo">
+          <label for="comentario-aprovar">Comentário (opcional)</label>
+          <textarea id="comentario-aprovar" name="comentario" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn btn--primario">Aprovar e publicar</button>
+      </form>
+
+      <hr />
+
+      <form action="/revisao/<%= sinal.id %>/rejeitar" method="post" class="formulario">
+        <div class="campo">
+          <label for="comentario-rejeitar">Justificativa da rejeição *</label>
+          <textarea id="comentario-rejeitar" name="comentario" rows="2" required></textarea>
+        </div>
+        <button type="submit" class="btn btn--perigo">Rejeitar</button>
+      </form>
+
+      <% if (historico && historico.length) { %>
+        <h3>Histórico de revisões</h3>
+        <ul class="historico">
+          <% historico.forEach(function (r) { %>
+            <li><strong><%= r.decisao %></strong> — <%= new Date(r.data).toLocaleString('pt-BR') %>
+              <% if (r.comentario) { %><br /><em><%= r.comentario %></em><% } %></li>
+          <% }); %>
+        </ul>
+      <% } %>
+    </section>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

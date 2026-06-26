@@ -1,0 +1,31 @@
+<%- include('partials/head', { titulo }) %>
+<%- include('partials/header') %>
+
+<main id="conteudo" class="container container--estreito">
+  <h1 class="titulo-pagina">Criar conta de colaborador</h1>
+  <p>Como colaborador, você poderá submeter novos sinais com vídeo. As submissões
+     passam por revisão antes de serem publicadas.</p>
+
+  <% if (erro) { %>
+    <div class="alerta alerta--erro" role="alert"><%= erro %></div>
+  <% } %>
+
+  <form action="/registrar" method="post" class="painel formulario" novalidate>
+    <div class="campo">
+      <label for="nome">Nome completo</label>
+      <input type="text" id="nome" name="nome" autocomplete="name" required />
+    </div>
+    <div class="campo">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" autocomplete="email" required />
+    </div>
+    <div class="campo">
+      <label for="senha">Senha <span class="ajuda">(mínimo 8 caracteres)</span></label>
+      <input type="password" id="senha" name="senha" autocomplete="new-password" minlength="8" required />
+    </div>
+    <button type="submit" class="btn btn--primario">Criar conta</button>
+    <p class="ajuda">Já tem conta? <a href="/login">Entrar</a>.</p>
+  </form>
+</main>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,36 @@
+<%- include('../partials/head', { titulo }) %>
+<%- include('../partials/header') %>
+
+<main id="conteudo" class="container">
+  <div class="cabecalho-secao">
+    <h1 class="titulo-pagina">Minhas submissões</h1>
+    <a href="/colaborador/novo" class="btn btn--primario">+ Submeter novo sinal</a>
+  </div>
+
+  <% if (locals.urlAtual && urlAtual.indexOf('ok=1') >= 0) { %>
+    <div class="alerta alerta--ok" role="status">Submissão enviada com sucesso! Aguarde a revisão.</div>
+  <% } %>
+
+  <% if (sinais.length === 0) { %>
+    <p class="vazio">Você ainda não submeteu nenhum sinal.</p>
+  <% } else { %>
+    <table class="tabela">
+      <caption class="sr-only">Lista das suas submissões e respectivos status</caption>
+      <thead>
+        <tr><th scope="col">Palavra</th><th scope="col">Status</th><th scope="col">Enviado em</th><th scope="col">Ação</th></tr>
+      </thead>
+      <tbody>
+        <% sinais.forEach(function (s) { %>
+          <tr>
+            <td><%= s.palavra %><% if (s.numero) { %> <sup><%= s.numero %></sup><% } %></td>
+            <td><span class="badge badge--status badge--<%= s.status.toLowerCase() %>"><%= s.status %></span></td>
+            <td><%= new Date(s.criadoEm).toLocaleDateString('pt-BR') %></td>
+            <td><a href="/sinal/<%= s.id %>">Ver</a></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>
