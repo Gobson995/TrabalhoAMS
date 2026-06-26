@@ -1,0 +1,110 @@
+<%
+  // Espera: locals.sinal (objeto ou null), locals.assuntos, locals.enums
+  const s = locals.sinal || {};
+  const assuntosSelecionados = (s.assuntos || []).map(function (a) { return a.id; });
+%>
+<div class="grade-form">
+  <div class="campo">
+    <label for="palavra">Palavra *</label>
+    <input type="text" id="palavra" name="palavra" required value="<%= s.palavra || '' %>" />
+  </div>
+  <div class="campo campo--estreito">
+    <label for="numero">Nº (acepção)</label>
+    <input type="number" id="numero" name="numero" min="1" value="<%= s.numero || '' %>" />
+  </div>
+
+  <div class="campo campo--largo">
+    <label for="acepcao">Acepção</label>
+    <textarea id="acepcao" name="acepcao" rows="2"><%= s.acepcao || '' %></textarea>
+  </div>
+  <div class="campo campo--largo">
+    <label for="exemplo">Exemplo</label>
+    <textarea id="exemplo" name="exemplo" rows="2"><%= s.exemplo || '' %></textarea>
+  </div>
+  <div class="campo campo--largo">
+    <label for="exemploLibras">Exemplo em Libras (glosa)</label>
+    <input type="text" id="exemploLibras" name="exemploLibras" value="<%= s.exemploLibras || '' %>" />
+  </div>
+
+  <div class="campo">
+    <label for="classeGramatical">Classe gramatical</label>
+    <select id="classeGramatical" name="classeGramatical">
+      <option value="">—</option>
+      <% Object.values(enums.ClasseGramatical).forEach(function (v) { %>
+        <option value="<%= v %>" <%= s.classeGramatical === v ? 'selected' : '' %>><%= v %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="campo">
+    <label for="origem">Origem</label>
+    <select id="origem" name="origem">
+      <% Object.values(enums.OrigemSinal).forEach(function (v) { %>
+        <option value="<%= v %>" <%= (s.origem || 'nacional') === v ? 'selected' : '' %>><%= v %></option>
+      <% }); %>
+    </select>
+  </div>
+  <div class="campo">
+    <label for="classificacao">Classificação do sinal</label>
+    <select id="classificacao" name="classificacao">
+      <option value="">—</option>
+      <% Object.values(enums.ClassificacaoSinal).forEach(function (v) { %>
+        <option value="<%= v %>" <%= s.classificacao === v ? 'selected' : '' %>><%= v %></option>
+      <% }); %>
+    </select>
+  </div>
+
+  <fieldset class="campo campo--largo">
+    <legend>Parâmetros do sinal</legend>
+    <div class="grade-form">
+      <div class="campo">
+        <label for="pontoArticulacao">Ponto de articulação</label>
+        <select id="pontoArticulacao" name="pontoArticulacao">
+          <option value="">—</option>
+          <% Object.values(enums.PontoArticulacao).forEach(function (v) { %>
+            <option value="<%= v %>" <%= s.pontoArticulacao === v ? 'selected' : '' %>><%= v %></option>
+          <% }); %>
+        </select>
+      </div>
+      <div class="campo">
+        <label for="configuracaoMao">Configuração da mão</label>
+        <input type="text" id="configuracaoMao" name="configuracaoMao" value="<%= s.configuracaoMao || '' %>" />
+      </div>
+      <div class="campo">
+        <label for="disposicaoMao">Disposição da mão</label>
+        <input type="text" id="disposicaoMao" name="disposicaoMao" value="<%= s.disposicaoMao || '' %>" />
+      </div>
+      <div class="campo">
+        <label for="orientacaoMao">Orientação da mão</label>
+        <input type="text" id="orientacaoMao" name="orientacaoMao" value="<%= s.orientacaoMao || '' %>" />
+      </div>
+      <div class="campo">
+        <label for="regiaoContato">Região de contato</label>
+        <input type="text" id="regiaoContato" name="regiaoContato" value="<%= s.regiaoContato || '' %>" />
+      </div>
+      <div class="campo campo--largo">
+        <label for="componentesNaoManuais">Componentes não manuais</label>
+        <input type="text" id="componentesNaoManuais" name="componentesNaoManuais"
+               value="<%= s.componentesNaoManuais || '' %>" placeholder="Ex.: expressão facial, movimento dos lábios" />
+      </div>
+      <div class="campo campo--largo">
+        <label for="signWriting">SignWriting</label>
+        <input type="text" id="signWriting" name="signWriting" value="<%= s.signWriting || '' %>" />
+      </div>
+    </div>
+  </fieldset>
+
+  <% if (locals.assuntos && assuntos.length) { %>
+    <fieldset class="campo campo--largo">
+      <legend>Assuntos</legend>
+      <div class="checkbox-grade">
+        <% assuntos.forEach(function (a) { %>
+          <label class="checkbox">
+            <input type="checkbox" name="assuntoIds" value="<%= a.id %>"
+              <%= assuntosSelecionados.indexOf(a.id) >= 0 ? 'checked' : '' %> />
+            <%= a.nome %>
+          </label>
+        <% }); %>
+      </div>
+    </fieldset>
+  <% } %>
+</div>

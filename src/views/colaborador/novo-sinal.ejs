@@ -1,0 +1,53 @@
+<%- include('../partials/head', { titulo }) %>
+<%- include('../partials/header') %>
+
+<main id="conteudo" class="container">
+  <h1 class="titulo-pagina">Submeter novo sinal</h1>
+  <p>Preencha os dados do sinal e anexe o vídeo (com legendas, sempre que possível).
+     Após o envio, a submissão fica <strong>pendente</strong> de revisão.</p>
+
+  <% if (erro) { %>
+    <div class="alerta alerta--erro" role="alert"><%= erro %></div>
+  <% } %>
+
+  <form action="/colaborador/novo" method="post" enctype="multipart/form-data" class="painel formulario" novalidate>
+    <%- include('../partials/sinal-campos', { sinal: null, assuntos, enums }) %>
+
+    <fieldset class="campo campo--largo">
+      <legend>Vídeo do sinal *</legend>
+      <div class="campo">
+        <label for="video">Arquivo de vídeo (MP4/WebM, até 50 MB)</label>
+        <input type="file" id="video" name="video" accept="video/mp4,video/webm,video/ogg" required />
+        <progress id="progresso-upload" value="0" max="100" hidden>0%</progress>
+      </div>
+      <div class="campo">
+        <label for="legenda">Legenda (.vtt ou .srt) — recomendada para acessibilidade</label>
+        <input type="file" id="legenda" name="legenda" accept=".vtt,.srt" />
+      </div>
+    </fieldset>
+
+    <!-- Consentimento LGPD -->
+    <fieldset class="campo campo--largo bloco-lgpd">
+      <legend>Consentimento (LGPD)</legend>
+      <label class="checkbox">
+        <input type="checkbox" name="contemPessoaIdentificavel" id="contemPessoa" />
+        O vídeo contém uma pessoa identificável.
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" name="contemMenor" />
+        A pessoa retratada é menor de idade (exige consentimento do responsável).
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" name="consentimentoConcedido" />
+        Declaro que há <strong>consentimento</strong> registrado do titular (ou responsável)
+        para armazenamento e exibição desta mídia.
+      </label>
+      <p class="ajuda">Se o vídeo contém pessoa identificável, o consentimento é obrigatório
+         antes do armazenamento.</p>
+    </fieldset>
+
+    <button type="submit" class="btn btn--primario btn--enviar">Enviar para revisão</button>
+  </form>
+</main>
+
+<%- include('../partials/footer') %>

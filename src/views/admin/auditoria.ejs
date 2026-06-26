@@ -1,0 +1,30 @@
+<%- include('../partials/head', { titulo }) %>
+<%- include('../partials/header') %>
+
+<main id="conteudo" class="container">
+  <h1 class="titulo-pagina">Trilha de auditoria (LGPD)</h1>
+  <p>Registro de quem acessou ou alterou dados, em conformidade com a LGPD.</p>
+
+  <% if (registros.length === 0) { %>
+    <p class="vazio">Nenhum registro de auditoria.</p>
+  <% } else { %>
+    <table class="tabela">
+      <caption class="sr-only">Eventos de auditoria do sistema</caption>
+      <thead>
+        <tr><th scope="col">Data/Hora</th><th scope="col">Ação</th><th scope="col">Entidade</th><th scope="col">Detalhes</th></tr>
+      </thead>
+      <tbody>
+        <% registros.forEach(function (r) { %>
+          <tr>
+            <td><%= new Date(r.dataHora).toLocaleString('pt-BR') %></td>
+            <td><span class="badge"><%= r.acao %></span></td>
+            <td><%= r.entidade %></td>
+            <td><%= r.detalhes || '—' %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

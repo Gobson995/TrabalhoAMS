@@ -1,0 +1,35 @@
+<%- include('../partials/head', { titulo }) %>
+<%- include('../partials/header') %>
+
+<main id="conteudo" class="container">
+  <h1 class="titulo-pagina">Fila de aprovação</h1>
+  <p>Submissões com status <strong>PENDENTE</strong> aguardando revisão.</p>
+
+  <% if (locals.urlAtual && urlAtual.indexOf('ok=aprovado') >= 0) { %>
+    <div class="alerta alerta--ok" role="status">Sinal aprovado e publicado.</div>
+  <% } else if (locals.urlAtual && urlAtual.indexOf('ok=rejeitado') >= 0) { %>
+    <div class="alerta alerta--ok" role="status">Sinal rejeitado e devolvido ao autor.</div>
+  <% } %>
+
+  <% if (pendentes.length === 0) { %>
+    <p class="vazio">Não há submissões pendentes. 🎉</p>
+  <% } else { %>
+    <table class="tabela">
+      <caption class="sr-only">Submissões pendentes de revisão</caption>
+      <thead>
+        <tr><th scope="col">Palavra</th><th scope="col">Enviado em</th><th scope="col">Ação</th></tr>
+      </thead>
+      <tbody>
+        <% pendentes.forEach(function (s) { %>
+          <tr>
+            <td><%= s.palavra %><% if (s.numero) { %> <sup><%= s.numero %></sup><% } %></td>
+            <td><%= new Date(s.criadoEm).toLocaleDateString('pt-BR') %></td>
+            <td><a class="btn btn--ghost" href="/revisao/<%= s.id %>">Avaliar</a></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</main>
+
+<%- include('../partials/footer') %>

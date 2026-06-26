@@ -1,0 +1,93 @@
+<%- include('partials/head', { titulo }) %>
+<%- include('partials/header') %>
+
+<main id="conteudo" class="container">
+  <h1 class="titulo-pagina">Pesquisar no dicionário</h1>
+
+  <!-- Barra de busca (equivalente ao INES: Palavra / Exemplo / Acepção / Assunto + Nº) -->
+  <section aria-labelledby="busca-titulo" class="painel busca">
+    <h2 id="busca-titulo" class="sr-only">Formulário de busca</h2>
+    <form action="/" method="get" class="busca__form" role="search">
+      <div class="campo">
+        <label for="criterio">Buscar por</label>
+        <select id="criterio" name="criterio">
+          <option value="palavra"  <%= filtros.criterio === 'palavra'  ? 'selected' : '' %>>Palavra</option>
+          <option value="exemplo"  <%= filtros.criterio === 'exemplo'  ? 'selected' : '' %>>Exemplo</option>
+          <option value="acepcao"  <%= filtros.criterio === 'acepcao'  ? 'selected' : '' %>>Acepção</option>
+          <option value="assunto"  <%= filtros.criterio === 'assunto'  ? 'selected' : '' %>>Assunto</option>
+        </select>
+      </div>
+      <div class="campo campo--cresce">
+        <label for="termo">Termo</label>
+        <input type="search" id="termo" name="termo" value="<%= filtros.termo %>"
+               placeholder="Digite uma palavra, exemplo ou assunto" />
+      </div>
+      <div class="campo campo--estreito">
+        <label for="numero">Nº</label>
+        <input type="number" id="numero" name="numero" min="1" value="<%= filtros.numero || '' %>" />
+      </div>
+
+      <fieldset class="campo campo--ordem">
+        <legend>Ordem</legend>
+        <label><input type="radio" name="ordem" value="alfabetica" <%= filtros.ordem === 'alfabetica' ? 'checked' : '' %> /> Alfabética</label>
+        <label><input type="radio" name="ordem" value="assunto" <%= filtros.ordem === 'assunto' ? 'checked' : '' %> /> Por assunto</label>
+        <label><input type="radio" name="ordem" value="mao" <%= filtros.ordem === 'mao' ? 'checked' : '' %> /> Mão</label>
+      </fieldset>
+
+      <button type="submit" class="btn btn--primario">Pesquisar</button>
+    </form>
+
+    <!-- Filtro alfabético A–Z -->
+    <nav class="alfabeto" aria-label="Filtro alfabético">
+      <a href="/?ordem=<%= filtros.ordem %>" class="alfabeto__item <%= !filtros.letra ? 'is-ativo' : '' %>">Todas</a>
+      <% alfabeto.forEach(function (l) { %>
+        <a href="/?letra=<%= l %>&ordem=<%= filtros.ordem %>"
+           class="alfabeto__item <%= filtros.letra === l ? 'is-ativo' : '' %>"
+           <%= filtros.letra === l ? 'aria-current="true"' : '' %>><%= l %></a>
+      <% }); %>
+    </nav>
+  </section>
+
+  <div class="grade-dicionario">
+    <!-- Painel Assuntos -->
+    <aside class="painel assuntos" aria-labelledby="assuntos-titulo">
+      <h2 id="assuntos-titulo">Assuntos</h2>
+      <ul class="lista-assuntos">
+        <% assuntos.forEach(function (a) { %>
+          <li><a href="/?criterio=assunto&termo=<%= encodeURIComponent(a.nome) %>"><%= a.nome %></a></li>
+        <% }); %>
+      </ul>
+    </aside>
+
+    <!-- Painel Palavras (resultados) -->
+    <section class="painel palavras" aria-labelledby="palavras-titulo">
+      <h2 id="palavras-titulo">Palavras <span class="contador"><%= sinais.length %> resultado(s)</span></h2>
+
+      <% if (sinais.length === 0) { %>
+        <p class="vazio">Nenhum sinal publicado encontrado para esta busca.</p>
+      <% } else { %>
+        <ul class="lista-palavras">
+          <% sinais.forEach(function (s) { %>
+            <li>
+              <a class="cartao-palavra" href="/sinal/<%= s.id %>">
+                <span class="cartao-palavra__nome"><%= s.palavra %><% if (s.numero) { %><sup><%= s.numero %></sup><% } %></span>
+                <% if (s.classeGramatical) { %><span class="cartao-palavra__classe"><%= s.classeGramatical %></span><% } %>
+                <% if (s.acepcao) { %><span class="cartao-palavra__acepcao"><%= s.acepcao %></span><% } %>
+              </a>
+            </li>
+          <% }); %>
+        </ul>
+      <% } %>
+    </section>
+
+    <!-- Painel de ajuda Mão/Vídeo -->
+    <aside class="painel dica-detalhe" aria-label="Visualização do sinal">
+      <h2>Mão e Vídeo</h2>
+      <p>Selecione uma palavra na lista para ver a <strong>configuração da mão</strong>,
+        o <strong>vídeo do sinal com legendas</strong>, a acepção, o exemplo e as
+        eventuais <strong>variantes regionais</strong>.</p>
+    </aside>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

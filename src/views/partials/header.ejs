@@ -1,0 +1,43 @@
+    <header class="cabecalho">
+      <div class="cabecalho__marca">
+        <a href="/" class="cabecalho__logo" aria-label="Página inicial do Dicionário Libras+">
+          <span class="cabecalho__logo-icone" aria-hidden="true">🤟</span>
+          <span class="cabecalho__logo-texto">Dicionário <strong>Libras+</strong></span>
+        </a>
+        <p class="cabecalho__subtitulo">Língua Brasileira de Sinais · Português</p>
+      </div>
+
+      <nav class="cabecalho__nav" aria-label="Navegação principal">
+        <ul>
+          <li><a href="/">Pesquisar</a></li>
+          <li><a href="/sobre">Sobre</a></li>
+          <% if (locals.usuario) { %>
+            <% if (pode(Permissao.SUBMETER_SINAL)) { %>
+              <li><a href="/colaborador/submissoes">Minhas submissões</a></li>
+            <% } %>
+            <% if (pode(Permissao.APROVAR_REJEITAR_SINAL)) { %>
+              <li><a href="/revisao">Fila de aprovação</a></li>
+            <% } %>
+            <% if (pode(Permissao.EDITAR_SINAL)) { %>
+              <li><a href="/admin">Administração</a></li>
+            <% } %>
+          <% } %>
+        </ul>
+      </nav>
+
+      <div class="cabecalho__conta">
+        <% if (locals.usuario) { %>
+          <span class="cabecalho__usuario">
+            <span aria-hidden="true">👤</span>
+            <%= usuario.nome %>
+            <span class="badge badge--papel"><%= usuario.papel %></span>
+          </span>
+          <form action="/logout" method="post" class="inline-form">
+            <button type="submit" class="btn btn--ghost">Sair</button>
+          </form>
+        <% } else { %>
+          <a href="/login" class="btn btn--ghost">Entrar</a>
+          <a href="/registrar" class="btn btn--primario">Criar conta</a>
+        <% } %>
+      </div>
+    </header>

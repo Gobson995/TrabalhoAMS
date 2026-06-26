@@ -1,0 +1,35 @@
+<%- include('../partials/head', { titulo }) %>
+<%- include('../partials/header') %>
+
+<main id="conteudo" class="container">
+  <h1 class="titulo-pagina">Administração</h1>
+
+  <div class="cartoes-admin">
+    <a class="cartao-admin" href="/admin/sinais">
+      <span class="cartao-admin__icone" aria-hidden="true">📚</span>
+      <span class="cartao-admin__titulo">Gerenciar sinais</span>
+      <span class="cartao-admin__desc">CRUD completo de verbetes.</span>
+    </a>
+    <a class="cartao-admin" href="/revisao">
+      <span class="cartao-admin__icone" aria-hidden="true">✅</span>
+      <span class="cartao-admin__titulo">Fila de aprovação</span>
+      <span class="cartao-admin__desc"><%= pendentes.length %> submissão(ões) pendente(s).</span>
+    </a>
+    <% if (pode(Permissao.GERENCIAR_USUARIOS)) { %>
+      <a class="cartao-admin" href="/admin/usuarios">
+        <span class="cartao-admin__icone" aria-hidden="true">👥</span>
+        <span class="cartao-admin__titulo">Gerenciar usuários</span>
+        <span class="cartao-admin__desc">Criar, editar papéis e excluir.</span>
+      </a>
+    <% } %>
+    <% if (pode(Permissao.ACESSAR_DADOS_SENSIVEIS)) { %>
+      <a class="cartao-admin" href="/admin/auditoria">
+        <span class="cartao-admin__icone" aria-hidden="true">🔍</span>
+        <span class="cartao-admin__titulo">Trilha de auditoria</span>
+        <span class="cartao-admin__desc">Registros de acesso e alterações (LGPD).</span>
+      </a>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,46 @@
+<%- include('../partials/head', { titulo }) %>
+<%- include('../partials/header') %>
+
+<main id="conteudo" class="container">
+  <div class="cabecalho-secao">
+    <h1 class="titulo-pagina">Gerenciar sinais</h1>
+    <a href="/admin/sinais/novo" class="btn btn--primario">+ Novo sinal</a>
+  </div>
+
+  <% if (locals.urlAtual && /ok=(criado|editado|excluido)/.test(urlAtual)) { %>
+    <div class="alerta alerta--ok" role="status">Operação realizada com sucesso.</div>
+  <% } %>
+
+  <form action="/admin/sinais" method="get" class="busca-inline" role="search">
+    <label for="termo" class="sr-only">Buscar sinal</label>
+    <input type="search" id="termo" name="termo" value="<%= termo %>" placeholder="Buscar por palavra" />
+    <button type="submit" class="btn btn--ghost">Buscar</button>
+  </form>
+
+  <table class="tabela">
+    <caption class="sr-only">Todos os sinais cadastrados, independentemente do status</caption>
+    <thead>
+      <tr><th scope="col">Palavra</th><th scope="col">Classe</th><th scope="col">Status</th><th scope="col">Ações</th></tr>
+    </thead>
+    <tbody>
+      <% sinais.forEach(function (s) { %>
+        <tr>
+          <td><%= s.palavra %><% if (s.numero) { %> <sup><%= s.numero %></sup><% } %></td>
+          <td><%= s.classeGramatical || '—' %></td>
+          <td><span class="badge badge--status badge--<%= s.status.toLowerCase() %>"><%= s.status %></span></td>
+          <td class="acoes-tabela">
+            <a href="/admin/sinais/<%= s.id %>/editar">Editar</a>
+            <% if (pode(Permissao.EXCLUIR_SINAL)) { %>
+              <form action="/admin/sinais/<%= s.id %>/excluir" method="post" class="inline-form"
+                    data-confirm="Excluir o sinal &quot;<%= s.palavra %>&quot;? Esta ação é irreversível.">
+                <button type="submit" class="link-perigo">Excluir</button>
+              </form>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</main>
+
+<%- include('../partials/footer') %>
