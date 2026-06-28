@@ -71,6 +71,11 @@ a:hover { color: var(--azul-escuro); }
   padding: 0.75rem 1.5rem;
 }
 .cabecalho a { color: #fff; }
+/* Botões no cabeçalho azul precisam de texto claro (senão o "Sair" some: azul sobre azul). */
+.cabecalho .btn--ghost { color: #fff; border-color: rgba(255, 255, 255, 0.85); }
+.cabecalho .btn--ghost:hover { background: rgba(255, 255, 255, 0.18); color: #fff; }
+.cabecalho .btn--primario { background: #fff; color: var(--azul-escuro); border-color: #fff; }
+.cabecalho .btn--primario:hover { background: var(--azul-claro); color: var(--azul-escuro); }
 .cabecalho__logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; font-size: 1.3rem; }
 .cabecalho__logo-icone { font-size: 1.6rem; }
 .cabecalho__subtitulo { margin: 0; font-size: 0.8rem; opacity: 0.9; }
