@@ -1,0 +1,44 @@
+@startuml diagrama-casos-de-uso
+!pragma layout smetana
+title Dicionário Libras+ — Diagrama de Casos de Uso (bônus)
+left to right direction
+skinparam shadowing false
+skinparam packageStyle rectangle
+
+actor Visitante
+actor Colaborador
+actor Revisor
+actor Administrador
+
+Colaborador --|> Visitante
+Revisor --|> Colaborador
+Administrador --|> Revisor
+
+rectangle "Dicionário Libras+" {
+  usecase "Buscar sinais" as UC_Buscar
+  usecase "Visualizar sinal\n(vídeo + variantes)" as UC_Ver
+  usecase "Autenticar-se" as UC_Login
+  usecase "Submeter novo sinal\ncom vídeo" as UC_Submeter
+  usecase "Acompanhar minhas\nsubmissões" as UC_Acompanhar
+  usecase "Aprovar novo sinal\ncom vídeo (UC-01)" as UC_Aprovar
+  usecase "Rejeitar sinal" as UC_Rejeitar
+  usecase "Editar sinal" as UC_Editar
+  usecase "Excluir sinal" as UC_Excluir
+  usecase "Gerenciar usuários\ne papéis" as UC_Usuarios
+  usecase "Consultar auditoria\n(LGPD)" as UC_Auditoria
+  usecase "Registrar consentimento\n(LGPD)" as UC_Consent
+}
+
+Visitante --> UC_Buscar
+Visitante --> UC_Ver
+Colaborador --> UC_Login
+Colaborador --> UC_Submeter
+Colaborador --> UC_Acompanhar
+UC_Submeter ..> UC_Consent : <<include>>
+Revisor --> UC_Aprovar
+Revisor --> UC_Rejeitar
+Revisor --> UC_Editar
+Administrador --> UC_Excluir
+Administrador --> UC_Usuarios
+Administrador --> UC_Auditoria
+@enduml

@@ -1,0 +1,66 @@
+@startuml diagrama-componentes-mvc
+!pragma layout smetana
+title Dicionário Libras+ — Diagrama de Componentes (arquitetura MVC, bônus)
+
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam nodesep 25
+skinparam ranksep 55
+skinparam defaultFontName Helvetica
+
+actor "Navegador\n(usuário)" as Browser
+
+package "Controller (Express Routers)" as PC {
+  [PublicController]
+  [AuthController]
+  [ColaboradorController]
+  [RevisaoController]
+  [AdminController]
+}
+
+package "Middlewares" as MW {
+  [auth (sessão)]
+  [rbac (autorizar)]
+  [upload (multer)]
+  [error handler]
+}
+
+package "View (EJS)" as VW {
+  [home · sinal-detalhe]
+  [colaborador/* · revisao/* · admin/*]
+  [public/css · public/js]
+}
+
+package "Service (casos de uso)" as SV {
+  [AuthService]
+  [SinalService]
+  [UsuarioService]
+}
+
+package "Repository (dados)" as RP {
+  [UsuarioRepository]
+  [SinalRepository]
+  [RevisaoRepository]
+  [Audit/ConsentRepository]
+}
+
+package "Domínio" as DM {
+  [Models: Usuario · Sinal]
+  [types: domain · rbac · workflow]
+}
+
+database "PostgreSQL" as DB
+folder "uploads/\n(vídeos + legendas)" as FS
+
+' ---- Fluxo principal (camadas) ----
+Browser --> PC : HTTP
+PC ..> MW : aplica
+PC --> VW : render
+PC --> SV : chama
+SV --> RP : usa
+SV ..> DM
+RP --> DB : SQL
+RP ..> DM
+[upload (multer)] --> FS : grava mídia
+
+@enduml
