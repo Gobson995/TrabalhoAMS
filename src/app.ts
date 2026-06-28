@@ -76,6 +76,8 @@ export function createApp(): Application {
   // ----- Contexto de view comum (usuário, helpers de RBAC, enums) -----
   app.use(carregarUsuario);
   app.use((req, res, next) => {
+    // Evita que o navegador mostre páginas autenticadas em cache (ex.: após logout / botão voltar).
+    res.set('Cache-Control', 'no-store');
     res.locals.Permissao = Permissao;
     res.locals.Papel = Papel;
     res.locals.StatusSinal = StatusSinal;

@@ -65,7 +65,10 @@ router.post(
 );
 
 router.post('/logout', (req, res) => {
-  req.session.destroy(() => res.redirect('/'));
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid');
+    res.redirect('/');
+  });
 });
 
 export default router;
