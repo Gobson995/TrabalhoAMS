@@ -13,8 +13,8 @@
 Este documento especifica os requisitos do **Dicionário Libras+**, uma aplicação web que
 expande a experiência do Dicionário da Língua Brasileira de Sinais do INES
 (<https://dicionario.ines.gov.br/>). O sistema permite **pesquisar, visualizar, submeter,
-revisar e administrar** sinais de Libras, com vídeo legendado, parâmetros gramaticais,
-SignWriting e **variação linguística** (variantes regionais).
+revisar e administrar** sinais de Libras, com vídeo legendado, parâmetros gramaticais
+e **variação linguística** (variantes regionais).
 
 ### 1.2 Escopo
 O produto reproduz fielmente a tela de busca do INES (Figura 1) e a página de detalhe de um
@@ -33,7 +33,6 @@ sinal com variantes regionais (Figura 2 — sinal "Pai"), acrescentando:
 | **Configuração da mão** | Forma assumida pela(s) mão(s) ao produzir o sinal. |
 | **Componentes não manuais** | Expressões faciais/corporais que integram o sinal. |
 | **Variação linguística** | Variantes regionais de um mesmo sinal (ex.: Padrão, RJ, RS). |
-| **SignWriting** | Sistema de escrita visual de línguas de sinais. |
 
 ---
 
@@ -122,7 +121,7 @@ Cada RF traz a **regra de negócio (RN)** associada.
 |---|---|---|
 | **RF01** | Buscar sinais por **Palavra / Exemplo / Acepção / Assunto** e por **Nº**. | Visitante só recebe sinais com status `PUBLICADO`. |
 | **RF02** | Ordenar resultados (**Alfabética / Por assunto / Mão**) e filtrar por letra A–Z. | Equivalente às opções de ordenação do INES. |
-| **RF03** | Visualizar o **detalhe do sinal**: acepção, exemplo, exemplo em Libras, classe gramatical, origem, imagem, SignWriting. | Apenas sinais publicados são exibidos ao visitante. |
+| **RF03** | Visualizar o **detalhe do sinal**: acepção, exemplo, exemplo em Libras, classe gramatical, origem, imagem. | Apenas sinais publicados são exibidos ao visitante. |
 | **RF04** | Reproduzir o **vídeo do sinal com legendas**. | Todo vídeo deve permitir legenda (captions); ausência é sinalizada. |
 | **RF05** | Exibir **variantes regionais** (variação linguística) do sinal. | Cada variante tem região, vídeo e descrição próprios. |
 | **RF06** | **Autenticação** (registro, login, logout). | Senhas armazenadas com hash (argon2); registro público cria sempre **Colaborador**. |
@@ -174,9 +173,9 @@ Cada RNF traz **métrica** e **método de verificação**.
 ### 6.1 Entidades principais
 - **Usuario** — `id, nome, email, senhaHash, papel, ativo, criadoEm, atualizadoEm`.
 - **Sinal** — `id, palavra, numero, acepcao, exemplo, exemploLibras, classeGramatical, origem,
-  imagemUrl, signWriting, status, pontoArticulacao, configuracaoMao, disposicaoMao, orientacaoMao,
+  imagemUrl, status, pontoArticulacao, configuracaoMao, disposicaoMao, orientacaoMao,
   regiaoContato, componentesNaoManuais, classificacao, criadoPor, revisadoPor, criadoEm, atualizadoEm`.
-- **VarianteSinal** — `id, sinalId, regiao, videoUrl, descricao, imagemUrl, signWriting`.
+- **VarianteSinal** — `id, sinalId, regiao, videoUrl, descricao, imagemUrl`.
 - **Assunto** — `id, nome` (N:N com Sinal via `sinal_assunto`).
 - **Video** — `id, sinalId, varianteId, url, legendaUrl, duracaoSeg, tamanhoBytes, criadoEm`.
 - **Revisao** — `id, sinalId, revisorId, decisao, comentario, data`.

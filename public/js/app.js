@@ -38,9 +38,21 @@
       });
 
       xhr.onload = function () {
-        // O servidor responde com redirect; seguimos para a URL final.
-        if (xhr.responseURL) window.location.href = xhr.responseURL;
-        else window.location.reload();
+        progresso.hidden = true;
+        // Sucesso: o servidor responde com redirect (302); o XHR o segue e expõe
+        // status 200 com a URL final — navegamos para ela.
+        // Erro (vídeo inválido/grande ou validação): a página é re-renderizada na
+        // MESMA URL do POST, que só aceita POST. Navegar para ela viraria um GET
+        // 404; então mostramos a resposta recebida, com a mensagem de erro.
+        if (xhr.status >= 400) {
+          document.open();
+          document.write(xhr.responseText);
+          document.close();
+        } else if (xhr.responseURL) {
+          window.location.href = xhr.responseURL;
+        } else {
+          window.location.reload();
+        }
       };
       xhr.onerror = function () {
         progresso.hidden = true;

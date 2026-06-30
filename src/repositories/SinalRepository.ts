@@ -125,16 +125,16 @@ export class SinalRepository {
     const { rows } = await exec.query(
       `INSERT INTO sinal
         (palavra, numero, acepcao, exemplo, exemplo_libras, classe_gramatical, origem,
-         imagem_url, sign_writing, status, ponto_articulacao, configuracao_mao, disposicao_mao,
+         imagem_url, status, ponto_articulacao, configuracao_mao, disposicao_mao,
          orientacao_mao, regiao_contato, componentes_nao_manuais, classificacao, criado_por)
-       VALUES ($1,$2,$3,$4,$5,$6,COALESCE($7,'nacional')::origem_sinal,$8,$9,
-               COALESCE($10,'RASCUNHO')::status_sinal,
-               $11,$12,$13,$14,$15,$16,$17,$18)
+       VALUES ($1,$2,$3,$4,$5,$6,COALESCE($7,'nacional')::origem_sinal,$8,
+               COALESCE($9,'RASCUNHO')::status_sinal,
+               $10,$11,$12,$13,$14,$15,$16,$17)
        RETURNING *`,
       [
         dados.palavra, dados.numero ?? null, dados.acepcao ?? null, dados.exemplo ?? null,
         dados.exemploLibras ?? null, dados.classeGramatical ?? null, dados.origem ?? null,
-        dados.imagemUrl ?? null, dados.signWriting ?? null, dados.status ?? null,
+        dados.imagemUrl ?? null, dados.status ?? null,
         dados.pontoArticulacao ?? null, dados.configuracaoMao ?? null, dados.disposicaoMao ?? null,
         dados.orientacaoMao ?? null, dados.regiaoContato ?? null, dados.componentesNaoManuais ?? null,
         dados.classificacao ?? null, dados.criadoPor ?? null,
@@ -148,7 +148,7 @@ export class SinalRepository {
     const colunas: Record<string, string> = {
       palavra: 'palavra', numero: 'numero', acepcao: 'acepcao', exemplo: 'exemplo',
       exemploLibras: 'exemplo_libras', classeGramatical: 'classe_gramatical', origem: 'origem',
-      imagemUrl: 'imagem_url', signWriting: 'sign_writing', status: 'status',
+      imagemUrl: 'imagem_url', status: 'status',
       pontoArticulacao: 'ponto_articulacao', configuracaoMao: 'configuracao_mao',
       disposicaoMao: 'disposicao_mao', orientacaoMao: 'orientacao_mao', regiaoContato: 'regiao_contato',
       componentesNaoManuais: 'componentes_nao_manuais', classificacao: 'classificacao',

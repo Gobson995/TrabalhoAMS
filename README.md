@@ -14,7 +14,7 @@ Projeto acadêmico desenvolvido em equipe, com arquitetura **MVC** em **TypeScri
 - 🔎 **Busca fiel ao INES**: por Palavra, Exemplo, Acepção, Assunto e Nº; ordenação
   (Alfabética / Por assunto / Mão) e filtro alfabético A–Z.
 - 🎬 **Detalhe do sinal**: vídeo **com legendas**, configuração de mão, parâmetros gramaticais,
-  SignWriting, acepção, exemplo e **variantes regionais** (ex.: PAI — Padrão, RJ, RS).
+  acepção, exemplo e **variantes regionais** (ex.: PAI — Padrão, RJ, RS).
 - 👤 **Papéis e permissões (RBAC)**: Visitante, Colaborador, Revisor e Administrador.
 - 📤 **Fluxo de aprovação**: Colaborador submete sinal + vídeo → `PENDENTE` → Revisor
   aprova/rejeita → `PUBLICADO`/`REJEITADO`.

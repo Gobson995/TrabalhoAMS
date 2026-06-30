@@ -8,7 +8,7 @@
 
 O **Dicionário Libras+** é uma aplicação web que **expande o Dicionário da Língua Brasileira de
 Sinais**. Permite **pesquisar e visualizar** sinais (com vídeo legendado, configuração de mão,
-parâmetros gramaticais, SignWriting e variantes regionais) e **expandir o acervo de forma
+parâmetros gramaticais e variantes regionais) e **expandir o acervo de forma
 colaborativa e moderada**: colaboradores enviam novos sinais com vídeo, revisores avaliam e
 publicam.
 
