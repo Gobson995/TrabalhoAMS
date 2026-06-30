@@ -57,14 +57,14 @@ async function main() {
       const { rows } = await c.query(
         `INSERT INTO sinal
            (palavra, numero, acepcao, exemplo, exemplo_libras, classe_gramatical, origem,
-            sign_writing, status, ponto_articulacao, configuracao_mao, disposicao_mao,
+            status, ponto_articulacao, configuracao_mao, disposicao_mao,
             orientacao_mao, regiao_contato, componentes_nao_manuais, classificacao,
             criado_por, revisado_por)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)
          RETURNING id`,
         [
           s.palavra, s.numero, s.acepcao, s.exemplo, s.exemploLibras, s.classeGramatical, s.origem,
-          s.signWriting, s.status, s.pontoArticulacao, s.configuracaoMao, s.disposicaoMao,
+          s.status, s.pontoArticulacao, s.configuracaoMao, s.disposicaoMao,
           s.orientacaoMao, s.regiaoContato, s.componentesNaoManuais, s.classificacao,
           s.criadoPor, s.revisadoPor,
         ],
@@ -102,7 +102,6 @@ async function main() {
       exemploLibras: 'MINHA MAMÃE ALMOÇO PREPARAR TODO-DIA.',
       classeGramatical: ClasseGramatical.SUBSTANTIVO,
       origem: OrigemSinal.NACIONAL,
-      signWriting: 'ꀀꀢ', // representação ilustrativa
       status: StatusSinal.PUBLICADO,
       pontoArticulacao: PontoArticulacao.CABECA,
       configuracaoMao: 'Mão em "P" tocando o queixo',
@@ -125,7 +124,6 @@ async function main() {
       exemploLibras: 'MEU PAI CIDADE TRABALHAR.',
       classeGramatical: ClasseGramatical.SUBSTANTIVO,
       origem: OrigemSinal.NACIONAL,
-      signWriting: 'ꀁꀣ',
       status: StatusSinal.PUBLICADO,
       pontoArticulacao: PontoArticulacao.CABECA,
       configuracaoMao: 'Mão em "P"',
@@ -147,9 +145,9 @@ async function main() {
     for (const v of variantes) {
       const varId = (
         await c.query(
-          `INSERT INTO variante_sinal (sinal_id, regiao, video_url, descricao, sign_writing)
-           VALUES ($1,$2,$3,$4,$5) RETURNING id`,
-          [pai, v.regiao, `/uploads/videos/${v.slug}.mp4`, v.descricao, 'ꀁꀣ'],
+          `INSERT INTO variante_sinal (sinal_id, regiao, video_url, descricao)
+           VALUES ($1,$2,$3,$4) RETURNING id`,
+          [pai, v.regiao, `/uploads/videos/${v.slug}.mp4`, v.descricao],
         )
       ).rows[0].id as string;
       await inserirVideo({ varianteId: varId }, v.slug);
@@ -159,7 +157,7 @@ async function main() {
       palavra: 'AMIGO', numero: 1,
       acepcao: 'Pessoa ligada a outra por amizade.', exemplo: 'Ele é meu amigo de infância.',
       exemploLibras: 'ELE MEU AMIGO INFÂNCIA.', classeGramatical: ClasseGramatical.SUBSTANTIVO,
-      origem: OrigemSinal.NACIONAL, signWriting: null, status: StatusSinal.PUBLICADO,
+      origem: OrigemSinal.NACIONAL, status: StatusSinal.PUBLICADO,
       pontoArticulacao: PontoArticulacao.MAOS, configuracaoMao: 'Mãos em "X" entrelaçadas',
       disposicaoMao: 'Duas mãos', orientacaoMao: 'Palmas frente a frente', regiaoContato: 'Dedos',
       componentesNaoManuais: 'Expressão leve', classificacao: ClassificacaoSinal.UMA_MAO,
@@ -172,7 +170,7 @@ async function main() {
       palavra: 'PAPEL', numero: 1,
       acepcao: 'Material feito de fibras de celulose usado para escrever.', exemplo: 'Escrevi no papel.',
       exemploLibras: 'EU PAPEL ESCREVER.', classeGramatical: ClasseGramatical.SUBSTANTIVO,
-      origem: OrigemSinal.NACIONAL, signWriting: null, status: StatusSinal.PUBLICADO,
+      origem: OrigemSinal.NACIONAL, status: StatusSinal.PUBLICADO,
       pontoArticulacao: PontoArticulacao.PEITO, configuracaoMao: 'Mão aberta',
       disposicaoMao: 'Duas mãos', orientacaoMao: 'Palma para cima', regiaoContato: 'Palma',
       componentesNaoManuais: 'Expressão neutra',
@@ -186,7 +184,7 @@ async function main() {
       palavra: 'TRABALHAR', numero: 1,
       acepcao: 'Exercer atividade ou ofício.', exemplo: 'Eu trabalho de manhã.',
       exemploLibras: 'EU MANHÃ TRABALHAR.', classeGramatical: ClasseGramatical.VERBO,
-      origem: OrigemSinal.NACIONAL, signWriting: null, status: StatusSinal.PUBLICADO,
+      origem: OrigemSinal.NACIONAL, status: StatusSinal.PUBLICADO,
       pontoArticulacao: PontoArticulacao.PEITO, configuracaoMao: 'Mãos em "S"',
       disposicaoMao: 'Duas mãos', orientacaoMao: 'Palmas para baixo', regiaoContato: 'Punhos',
       componentesNaoManuais: 'Expressão neutra',
@@ -200,7 +198,7 @@ async function main() {
       palavra: 'SEXO', numero: 1,
       acepcao: 'Conjunto de características que distinguem machos e fêmeas.', exemplo: 'Sexo masculino ou feminino.',
       exemploLibras: 'SEXO HOMEM MULHER.', classeGramatical: ClasseGramatical.SUBSTANTIVO,
-      origem: OrigemSinal.NACIONAL, signWriting: null, status: StatusSinal.PUBLICADO,
+      origem: OrigemSinal.NACIONAL, status: StatusSinal.PUBLICADO,
       pontoArticulacao: PontoArticulacao.OLHOS, configuracaoMao: 'Mão em "G"',
       disposicaoMao: 'Mão dominante', orientacaoMao: 'Palma para dentro', regiaoContato: 'Face',
       componentesNaoManuais: 'Movimento dos lábios',
@@ -214,7 +212,7 @@ async function main() {
       palavra: 'ESCOLA', numero: 1,
       acepcao: 'Estabelecimento onde se ministra ensino.', exemplo: 'Vou à escola estudar.',
       exemploLibras: 'EU ESCOLA IR ESTUDAR.', classeGramatical: ClasseGramatical.SUBSTANTIVO,
-      origem: OrigemSinal.NACIONAL, signWriting: null, status: StatusSinal.PENDENTE,
+      origem: OrigemSinal.NACIONAL, status: StatusSinal.PENDENTE,
       pontoArticulacao: PontoArticulacao.MAOS, configuracaoMao: 'Mãos abertas batendo palmas',
       disposicaoMao: 'Duas mãos', orientacaoMao: 'Palmas frente a frente', regiaoContato: 'Palmas',
       componentesNaoManuais: 'Expressão neutra',

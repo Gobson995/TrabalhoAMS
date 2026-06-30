@@ -14,7 +14,7 @@ function novoUsuario(papel: Papel, ativo = true): Usuario {
 function novoSinal(status: StatusSinal): Sinal {
   return new Sinal({
     id: 's1', palavra: 'PAI', numero: 1, acepcao: null, exemplo: null, exemploLibras: null,
-    classeGramatical: null, origem: OrigemSinal.NACIONAL, imagemUrl: null, signWriting: null,
+    classeGramatical: null, origem: OrigemSinal.NACIONAL, imagemUrl: null,
     status, pontoArticulacao: null, configuracaoMao: null, disposicaoMao: null,
     orientacaoMao: null, regiaoContato: null, componentesNaoManuais: null, classificacao: null,
     criadoPor: null, revisadoPor: null, criadoEm: new Date(), atualizadoEm: new Date(),

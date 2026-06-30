@@ -23,7 +23,7 @@
     </header>
 
     <div class="sinal__grade">
-      <!-- Coluna esquerda: Mão (configuração) + SignWriting -->
+      <!-- Coluna esquerda: Mão (configuração) -->
       <aside class="sinal__mao painel" aria-labelledby="mao-titulo">
         <h2 id="mao-titulo">Mão</h2>
         <% if (sinal.imagemUrl) { %>
@@ -36,11 +36,6 @@
           </div>
         <% } %>
         <p class="sinal__mao-legenda"><%= sinal.configuracaoMao || 'Configuração não informada' %></p>
-
-        <% if (sinal.signWriting) { %>
-          <h3>SignWriting</h3>
-          <p class="signwriting" aria-label="Notação SignWriting do sinal"><%= sinal.signWriting %></p>
-        <% } %>
       </aside>
 
       <!-- Coluna central: Vídeo do sinal com legendas -->
@@ -104,7 +99,6 @@
                 </video>
               <% } %>
               <p><%= v.descricao || '' %></p>
-              <% if (v.signWriting) { %><p class="signwriting"><%= v.signWriting %></p><% } %>
             </article>
           <% }); %>
         </div>

@@ -76,7 +76,6 @@ class Sinal {
   +pontoArticulacao: PontoArticulacao
   +configuracaoMao: string
   +classificacao: ClassificacaoSinal
-  +signWriting: string
   --
   +estaPublicado(): boolean
   +aplicarTransicao(acao): StatusSinal

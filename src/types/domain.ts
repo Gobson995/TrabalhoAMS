@@ -105,7 +105,6 @@ export interface Sinal {
   classeGramatical: ClasseGramatical | null;
   origem: OrigemSinal;
   imagemUrl: string | null;
-  signWriting: string | null;
   status: StatusSinal;
   // Parâmetros primários
   pontoArticulacao: PontoArticulacao | null;
@@ -131,7 +130,6 @@ export interface VarianteSinal {
   videoUrl: string | null;
   descricao: string | null;
   imagemUrl: string | null;
-  signWriting: string | null;
 }
 
 export interface Assunto {

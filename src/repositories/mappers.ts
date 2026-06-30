@@ -36,7 +36,6 @@ export const mapSinal = (r: any): Sinal => ({
   classeGramatical: r.classe_gramatical,
   origem: r.origem,
   imagemUrl: r.imagem_url,
-  signWriting: r.sign_writing,
   status: r.status,
   pontoArticulacao: r.ponto_articulacao,
   configuracaoMao: r.configuracao_mao,
@@ -58,7 +57,6 @@ export const mapVariante = (r: any): VarianteSinal => ({
   videoUrl: r.video_url,
   descricao: r.descricao,
   imagemUrl: r.imagem_url,
-  signWriting: r.sign_writing,
 });
 
 export const mapVideo = (r: any): Video => ({

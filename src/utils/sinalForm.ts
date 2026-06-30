@@ -34,7 +34,6 @@ export function parseSinalForm(body: Record<string, unknown>): DadosSinal {
     exemploLibras: vazioParaNulo(body.exemploLibras),
     classeGramatical: enumOuNulo(ClasseGramatical, body.classeGramatical),
     origem: enumOuNulo(OrigemSinal, body.origem) ?? OrigemSinal.NACIONAL,
-    signWriting: vazioParaNulo(body.signWriting),
     pontoArticulacao: enumOuNulo(PontoArticulacao, body.pontoArticulacao),
     configuracaoMao: vazioParaNulo(body.configuracaoMao),
     disposicaoMao: vazioParaNulo(body.disposicaoMao),

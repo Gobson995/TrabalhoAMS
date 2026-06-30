@@ -58,7 +58,6 @@ CREATE TABLE IF NOT EXISTS sinal (
   classe_gramatical        classe_gramatical,
   origem                   origem_sinal NOT NULL DEFAULT 'nacional',
   imagem_url               TEXT,
-  sign_writing             TEXT,
   status                   status_sinal NOT NULL DEFAULT 'RASCUNHO',
   -- Parâmetros primários
   ponto_articulacao        ponto_articulacao,
@@ -90,8 +89,7 @@ CREATE TABLE IF NOT EXISTS variante_sinal (
   regiao        VARCHAR(80) NOT NULL,
   video_url     TEXT,
   descricao     TEXT,
-  imagem_url    TEXT,
-  sign_writing  TEXT
+  imagem_url    TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_variante_sinal_id ON variante_sinal (sinal_id);
 

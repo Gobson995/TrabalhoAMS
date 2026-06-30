@@ -18,7 +18,6 @@ export class Sinal {
   classeGramatical!: ISinal['classeGramatical'];
   origem!: ISinal['origem'];
   imagemUrl!: string | null;
-  signWriting!: string | null;
   status!: StatusSinal;
   pontoArticulacao!: ISinal['pontoArticulacao'];
   configuracaoMao!: string | null;
